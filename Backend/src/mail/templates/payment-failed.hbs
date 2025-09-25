@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Failed</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6f8;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+      .header {
+        background-color: #dc3545;
+        color: #ffffff;
+        padding: 20px;
+        text-align: center;
+        font-size: 24px;
+      }
+      .content {
+        padding: 30px 20px;
+        color: #333333;
+        line-height: 1.6;
+      }
+      .footer {
+        padding: 20px;
+        text-align: center;
+        font-size: 12px;
+        color: #999999;
+      }
+      @media (max-width: 600px) {
+        .container {
+          margin: 20px;
+        }
+        .content {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">Payment Failed</div>
+      <div class="content">
+        <p>Hi {{studentName}},</p>
+        <p>
+          Unfortunately, your payment of <strong>{{transactionAmount}}</strong> 
+          for <strong>{{schoolName}}</strong> could not be processed.
+        </p>
+        <p>
+          Transaction ID: <strong>{{transactionId}}</strong><br />
+          Date & Time: <strong>{{paymentTime}}</strong>
+        </p>
+        <p>
+          Reason: <strong>{{errorMessage}}</strong>
+        </p>
+        <p>
+          Please try again or contact our support team if the issue persists.
+        </p>
+        <p>
+          Regards,<br />
+          <strong>School Payment Support Team</strong>
+        </p>
+      </div>
+      <div class="footer">
+        &copy; {{year}} School Payment Portal. All rights reserved.
+      </div>
+    </div>
+  </body>
+</html>
