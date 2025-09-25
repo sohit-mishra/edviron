@@ -4,22 +4,6 @@ A full-stack **School Payment and Dashboard** application with a secure backend 
 
 ---
 
-## Table of Contents
-1. [Backend Overview](#backend-overview)  
-2. [Frontend Overview](#frontend-overview)  
-3. [Setup & Installation](#setup--installation)  
-4. [API Endpoints](#api-endpoints-backend)  
-5. [Environment Variables](#environment-variables)  
-6. [API Usage Example](#api-usage-example)  
-7. [Testing](#testing)  
-8. [Scalability & Security](#scalability--security)  
-9. [Frontend Features](#frontend-features)  
-10. [Submission Guidelines](#submission-guidelines)  
-11. [Reference & Resources](#reference--resources)  
-12. [License](#license)  
-
----
-
 ## Backend Overview
 **Tech Stack:** Node.js, NestJS/Express/Fastify, MongoDB Atlas  
 
