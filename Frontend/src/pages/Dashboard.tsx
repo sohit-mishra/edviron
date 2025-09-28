@@ -7,7 +7,7 @@ import {
   TableHead,
   TableCell,
 } from "@/components/ui/table";
-import { Input } from "../components/ui/input";
+import { Input } from "@/components/ui/input";
 import {
   Pagination,
   PaginationItem,
@@ -26,21 +26,31 @@ import { AnimatePresence, motion } from "framer-motion";
 
 interface Transaction {
   _id: string;
-  collect_id: string;
+  school_id: string;
+  payment_mode: string;
+  status:
+    | "SUCCESS"
+    | "FAILED"
+    | "PENDING"
+    | "USER_DROPPED"
+    | "EXPIRED"
+    | "CANCELLED";
+  error_message: string;
+  payment_time: string;
   order_id: string;
-  student: string;
+  student_info: {
+    student_id: string;
+    name: string;
+    phone: number;
+    email: string;
+  };
   school: string;
   order_amount: number;
-  transaction_amount: number;
-  payment_mode: string;
-  payment_details?: string;
-  bank_reference?: string;
-  status: string;
-  payment_time: string;
 }
 
 export default function TransactionsDashboard() {
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
@@ -52,7 +62,9 @@ export default function TransactionsDashboard() {
         page: currentPage.toString(),
         limit: itemsPerPage.toString(),
       });
+
       if (search.trim() !== "") query.append("search", search);
+      if (statusFilter !== "All") query.append("status", statusFilter);
 
       const response = await api.get(`/transactions/all?${query.toString()}`);
       const data = response.data;
@@ -66,7 +78,16 @@ export default function TransactionsDashboard() {
 
   useEffect(() => {
     fetchTransactions();
-  }, [currentPage, itemsPerPage, search]);
+  }, [currentPage, itemsPerPage, search, statusFilter]);
+
+  const statusColors: Record<Transaction["status"], string> = {
+    SUCCESS: "text-green-600",
+    FAILED: "text-red-600",
+    PENDING: "text-yellow-600",
+    USER_DROPPED: "text-orange-600",
+    EXPIRED: "text-gray-400",
+    CANCELLED: "text-gray-500",
+  };
 
   return (
     <motion.div
@@ -86,16 +107,37 @@ export default function TransactionsDashboard() {
           }}
           className="w-full md:w-64"
         />
+
+        <Select
+          value={statusFilter}
+          onValueChange={(val) => {
+            setStatusFilter(val);
+            setCurrentPage(1);
+          }}
+        >
+          <SelectTrigger className="w-44">
+            <SelectValue placeholder="Filter by status" />
+          </SelectTrigger>
+          <SelectContent>
+            {["All", "SUCCESS", "FAILED", "PENDING", "USER_DROPPED", "EXPIRED", "CANCELLED"].map(
+              (status) => (
+                <SelectItem key={status} value={status}>
+                  {status}
+                </SelectItem>
+              )
+            )}
+          </SelectContent>
+        </Select>
       </div>
 
       <Table className="w-full border border-gray-200 rounded-lg">
         <TableHeader className="bg-gray-100">
           <TableRow>
             <TableHead className="px-4 py-2">Order ID</TableHead>
-            <TableHead className="px-4 py-2">Student</TableHead>
-            <TableHead className="px-4 py-2">School</TableHead>
+            <TableHead className="px-4 py-2">Student Name</TableHead>
+            <TableHead className="px-4 py-2">Email</TableHead>
+            <TableHead className="px-4 py-2">Phone</TableHead>
             <TableHead className="px-4 py-2">Order Amount</TableHead>
-            <TableHead className="px-4 py-2">Txn Amount</TableHead>
             <TableHead className="px-4 py-2">Mode</TableHead>
             <TableHead className="px-4 py-2">Status</TableHead>
             <TableHead className="px-4 py-2">Payment Time</TableHead>
@@ -105,7 +147,7 @@ export default function TransactionsDashboard() {
         <TableBody>
           {transactions.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={9} className="text-center py-10">
+              <TableCell colSpan={8} className="text-center py-10">
                 No transactions found.
               </TableCell>
             </TableRow>
@@ -119,23 +161,24 @@ export default function TransactionsDashboard() {
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <TableCell className="px-4 py-3">{txn.collect_id}</TableCell>
-                  <TableCell className="px-4 py-3">{txn.student}</TableCell>
-                  <TableCell className="px-4 py-3">{txn.school}</TableCell>
-                  <TableCell className="px-4 py-3 text-center">
-                    {txn.order_amount}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-center">
-                    {txn.transaction_amount}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-center">
-                    {txn.payment_mode}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-center">
+                  <TableCell className="px-4 py-3">{txn.order_id}</TableCell>
+                  <TableCell className="px-4 py-3">{txn.student_info.name}</TableCell>
+                  <TableCell className="px-4 py-3 text-center">{txn.student_info.email}</TableCell>
+                  <TableCell className="px-4 py-3 text-center">{txn.student_info.phone}</TableCell>
+                  <TableCell className="px-4 py-3 text-center">₹ {txn.order_amount}</TableCell>
+                  <TableCell className="px-4 py-3 text-center">{txn.payment_mode}</TableCell>
+                  <TableCell className={`px-4 py-3 text-center font-medium ${statusColors[txn.status]}`}>
                     {txn.status}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-center">
-                    {new Date(txn.payment_time).toLocaleString()}
+                    {new Date(txn.payment_time).toLocaleString("en-IN", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}
                   </TableCell>
                 </motion.tr>
               ))}
@@ -158,7 +201,7 @@ export default function TransactionsDashboard() {
               <SelectValue placeholder="5" />
             </SelectTrigger>
             <SelectContent>
-              {[5, 10].map((num) => (
+              {[5, 10, 20].map((num) => (
                 <SelectItem key={num} value={String(num)}>
                   {num}
                 </SelectItem>

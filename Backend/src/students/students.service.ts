@@ -101,9 +101,11 @@ export class StudentsService {
 
   async getSelectStudent(adminId: Types.ObjectId) {
     const findSchool = await this.userModel.findById(adminId);
+
     if (!findSchool) {
       throw new UnauthorizedException('Admin not found');
     }
+
 
     const students = await this.userModel
       .find({ role: 'student', schoolId: findSchool.schoolId })
@@ -175,9 +177,9 @@ export class StudentsService {
       months,
       monthPayment: calculatedMonthPayment,
       password: hashedPassword,
-      createId: adminId,
+      createId: new  Types.ObjectId(adminId),
       role: 'student',
-      schoolId,
+      schoolId :new  Types.ObjectId(schoolId),
       isVerified: true,
       paymentClear: 0
     });

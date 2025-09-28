@@ -29,10 +29,11 @@ export class SchoolController {
 
   @Get('select')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.Admin)
+  @Roles(Role.Admin, Role.Teacher)
   async getSelectSchoolAdmin(@Req() req: any) {
     const adminId = new Types.ObjectId(req.user.userId);
-    return await this.schoolService.getSelectSchoolAdmin(adminId);
+    const role = req.user.role;
+    return await this.schoolService.getSelectSchoolAdmin(adminId, role);
   }
 
   @Put('update/:id')

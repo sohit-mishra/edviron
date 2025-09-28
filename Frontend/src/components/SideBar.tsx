@@ -94,7 +94,7 @@ export default function SideBar({ isOpen }: SideBarProps) {
       animate={{ x: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
      className={clsx(
-  "fixed md:static top-0 pt-[72px] left-0 h-auto w-64 bg-white shadow-lg flex flex-col p-4 border-r border-gray-300 z-40",
+  "fixed md:static h-screen md:h-auto top-0 pt-[72px] left-0 w-64 bg-white shadow-lg flex flex-col p-4 border-r border-gray-300 z-40",
   {
     "-translate-x-full md:translate-x-0": !isOpen,
     "translate-x-0": isOpen,

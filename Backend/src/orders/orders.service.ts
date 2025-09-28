@@ -12,6 +12,7 @@ import {
 } from './dto/get-all-order.dto';
 import { User, UserDocument } from 'src/auth/schemas/user.schema';
 import { ResponseSingleOrderdto } from './dto/singleOrder.dtt';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class OrdersService {
@@ -50,42 +51,48 @@ export class OrdersService {
     };
   }
 
-  async getOrderDetails(id: string):Promise<ResponseSingleOrderdto> {
-    const findOrder = await this.orderModel.findById(id);
- 
+  async getOrderDetails(id: string): Promise<ResponseSingleOrderdto> {
+    const findOrder = await this.orderModel.findOne({Order_id : id});
+
     if (!findOrder) {
       throw new Error('Order not found');
     }
     const studentDetail = await this.userModel.findById(findOrder.student_info);
 
-
     if (!studentDetail) {
       throw new Error('Student not found');
     }
 
-    const orderData = { 
-      totalFees : studentDetail.totalFees,
-      monthPayment : studentDetail.monthPayment,
-      paymentClear : studentDetail.paymentClear || 0,
+    const orderData = {
+      totalFees: studentDetail.totalFees,
+      monthPayment: studentDetail.monthPayment,
+      paymentClear: studentDetail.paymentClear || 0,
       email: studentDetail.email,
-      _id : studentDetail._id,
-      name : studentDetail.name
-    }
+      _id: studentDetail._id,
+      name: studentDetail.name,
+      studentId: findOrder?.student_info,
+      schoolId: findOrder?.school_id,
+      Order_id : id
+    };
 
     return {
-      order : orderData,
-      statusCode: 200
-    }
+      order: orderData,
+      statusCode: 200,
+    };
   }
 
   async createOrder(
     createOrderDto: CreateOrderBodyDto,
   ): Promise<CreateOrderBodyResponseDto> {
+    function generateOrderId(): string {
+      return `ORD-${uuidv4()}`;
+    }
     const order = new this.orderModel({
       ...createOrderDto,
       school_id: new Types.ObjectId(createOrderDto.school_id),
       trustee_id: createOrderDto.trustee_id,
       student_info: new Types.ObjectId(createOrderDto.student_info),
+      Order_id: generateOrderId(),
     });
 
     const savedOrder = await order.save();

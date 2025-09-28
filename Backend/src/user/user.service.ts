@@ -14,7 +14,7 @@ export class UserService {
     const existingUser = await this.userModel
       .findById(adminId)
       .select(
-        '-isVerified -password -createdAt -updatedAt -createId -resetToken -resetTokenExpires -verifyAccountOtp',
+        '-isVerified -password -updatedAt -createId -resetToken -resetTokenExpires -verifyAccountOtp',
       );
 
     if (!existingUser) {

@@ -1,4 +1,10 @@
-import { IsString, IsNumber } from "class-validator";
+import {
+  IsString,
+  IsNumber,
+  IsMongoId,
+  IsOptional,
+  Matches,
+} from 'class-validator';
 
 export class CreatePaymentBodyDto {
   @IsString()
@@ -12,9 +18,17 @@ export class CreatePaymentBodyDto {
 
   @IsString()
   name: string;
+
+  @IsMongoId()
+  student_id: string;
+
+  @IsOptional()
+  @IsString()
+  order_id?: string;
+
+  @IsString()
+  @Matches(/^\d{10}$/, { message: 'Phone number must be 10 digits' })
+  phone: string;
 }
 
-
-export class CreatePaymentResponseDto{
-    
-}
+export class CreatePaymentResponseDto {}

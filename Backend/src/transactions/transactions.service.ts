@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { GetAllQueryTransactions } from './dto/get-all-transactions.dto';
-import { OrderStatus, OrderStatusDocument } from './schemas/order-status.schema';
+import {
+  OrderStatus,
+  OrderStatusDocument,
+} from './schemas/order-status.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -12,28 +15,28 @@ export class TransactionsService {
   ) {}
 
   async getAllTransactions(query: GetAllQueryTransactions) {
-    const { search, sort, limit = 10, page = 1 } = query;
+    const { search, status, limit = 10, page = 1 } = query;
 
     const filter: any = {};
+
     if (search) {
-      filter.$or = [
-        { payment_message: { $regex: search, $options: 'i' } },
-        { status: { $regex: search, $options: 'i' } },
-        { bank_reference: { $regex: search, $options: 'i' } },
-      ];
+      filter['student_info.name'] = { $regex: search, $options: 'i' };
     }
 
-    const sortOption: any = {};
-    if (sort) {
-      const [field, order] = sort.split(':');
-      sortOption[field] = order === 'desc' ? -1 : 1;
+    if (status && status !== 'All') {
+      filter.status = status;
     }
 
     const transactions = await this.orderStatusModel
       .find(filter)
-      .sort(sortOption)
       .skip((page - 1) * limit)
-      .limit(limit);
+      .sort({payment_time : -1})
+      .limit(limit)
+      .populate('')
+      .select(
+        '-collect_id -transaction_amount -payment_details -bank_reference -payment_message -school_id',
+      )
+      .lean();
 
     const total = await this.orderStatusModel.countDocuments(filter);
 

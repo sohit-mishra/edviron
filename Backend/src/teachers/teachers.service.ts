@@ -107,7 +107,7 @@ async createTeacher(
   const teacher = await this.userModel.create({
     name,
     email,
-    schoolId,
+    schoolId : new Types.ObjectId(schoolId),
     password: hashedPassword,
     createId: adminId,
     role: 'teacher',

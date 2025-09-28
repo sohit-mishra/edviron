@@ -7,14 +7,14 @@ export class GetAllQueryTransactions{
   search?: string;
 
   @IsOptional()
-  @IsString()
-  sort?: string;
-
-  @IsOptional()
   @Type(() => Number)
   @IsInt()
   @Min(1)
   limit?: number;
+
+  @IsOptional()
+  @IsString()
+  status?: string;
 
   @IsOptional()
   @Type(() => Number)

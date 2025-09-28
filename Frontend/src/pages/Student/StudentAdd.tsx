@@ -28,7 +28,7 @@ export default function StudentPayment() {
     email: "",
     schoolId: "",
     totalFees: "",
-    months: "",
+    months: "12",
     monthPayment: "",
   });
   const [responseData, setResponseData] = useState<any>(null);
@@ -95,7 +95,7 @@ export default function StudentPayment() {
         email: "",
         schoolId: "",
         totalFees: "",
-        months: "",
+        months: "12",
         monthPayment: "",
       });
       toast.success(res.data.message);

@@ -39,14 +39,24 @@ export class SchoolService {
     return school;
   }
 
-  async getSelectSchoolAdmin(adminId: Types.ObjectId) {
-    let school = await this.schoolModel
+  async getSelectSchoolAdmin(adminId: Types.ObjectId, role: string) {
+    if (role === 'teacher') {
+      const findTeacher = await this.userModel.findById(adminId);
+      if (!findTeacher) return null;
+
+      const school = await this.schoolModel
+        .findOne({ _id: findTeacher.schoolId })
+        .select('_id schoolName')
+        .exec();
+      return school;
+    }
+
+    const school = await this.schoolModel
       .findOne({ adminId })
-      .select('_id, schoolName')
+      .select('_id schoolName')
       .exec();
     return school;
   }
-
   async CreateSchoolAndUpdate(
     id: string,
     updateSchoolAndUpdateDto: UpdateSchoolAndUpdateDto,

@@ -11,6 +11,7 @@ export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   @Post('/create-payment')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async CreatePayment(@Body() createPaymentBodyDto: CreatePaymentBodyDto) {
     return await this.paymentService.CreatePayment(createPaymentBodyDto);
   }
@@ -19,7 +20,14 @@ export class PaymentController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin, Role.Teacher)
   async getPaymentDetails(@Param('id') id: string) {
-    console.log('d');
     return await this.paymentService.getPaymentDetails(id);
   }
+
+  @Get('checkStatus/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin, Role.Teacher , Role.Student)
+  async checkPaymentStatus(@Param('id') id: string) {
+    return await this.paymentService.checkPaymentStatus(id);
+  }
+
 }

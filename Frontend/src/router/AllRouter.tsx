@@ -7,7 +7,6 @@ import ResetPassword from "@/pages/resetPassword";
 import Otp from "@/pages/otp";
 import NotFoundPage from "@/pages/pageNotFound";
 import PrivateRoute from "@/router/PrivateRoute";
-import Dashboard from "@/pages/Dashboard";
 import UnAuthorized from "@/pages/unauthorized";
 import Layout from "@/layout/layout";
 import SchoolAddAndUpdate from "@/pages/SchoolAddandUpdate";
@@ -22,12 +21,12 @@ import OneStudent from "@/pages/Student/OneStudent";
 import UpdateStudent from "@/pages/Student/UpdateStudent";
 import CreateOrder from "@/pages/CreateOrder";
 import PayNow from "@/pages/PayNow";
-
+import PaymentCheckStatus from "@/pages/PaymentCheckStatus";
+import RoleDashboard from "@/components/RoleDashboard";
 
 export default function AllRouter() {
   return (
     <Routes>
-    
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -35,13 +34,12 @@ export default function AllRouter() {
       <Route path="/otp" element={<Otp />} />
       <Route path="/unauthorized" element={<UnAuthorized />} />
 
-     
       <Route
         path="/"
         element={
           <PrivateRoute roles={["admin", "teacher", "student"]}>
             <Layout>
-              <Dashboard />
+              <RoleDashboard />
             </Layout>
           </PrivateRoute>
         }
@@ -72,7 +70,7 @@ export default function AllRouter() {
       <Route
         path="/students"
         element={
-          <PrivateRoute roles={["admin"]}>
+          <PrivateRoute roles={["admin", "teacher"]}>
             <Layout>
               <AllStudent />
             </Layout>
@@ -83,7 +81,7 @@ export default function AllRouter() {
       <Route
         path="/transactions"
         element={
-          <PrivateRoute roles={["admin"]}>
+          <PrivateRoute roles={["admin", "teacher"]}>
             <Layout>
               <PaymentStatus />
             </Layout>
@@ -108,6 +106,17 @@ export default function AllRouter() {
           <PrivateRoute roles={["admin"]}>
             <Layout>
               <UpdateTeacher />
+            </Layout>
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/payment_status/:id"
+        element={
+          <PrivateRoute roles={["admin","teacher", "student"]}>
+            <Layout>
+              <PaymentCheckStatus />
             </Layout>
           </PrivateRoute>
         }
@@ -146,12 +155,12 @@ export default function AllRouter() {
         }
       />
 
-         <Route
+      <Route
         path="/createPayment"
         element={
           <PrivateRoute roles={["admin", "teacher"]}>
             <Layout>
-              <CreateOrder/>
+              <CreateOrder />
             </Layout>
           </PrivateRoute>
         }
@@ -168,7 +177,7 @@ export default function AllRouter() {
         }
       />
 
-       <Route
+      <Route
         path="/paynow"
         element={
           <PrivateRoute roles={["admin", "teacher", "student"]}>
