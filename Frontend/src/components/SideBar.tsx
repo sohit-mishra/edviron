@@ -1,10 +1,12 @@
+"use client";
+
+import React from "react";
 import { Home, User, Settings, Clipboard, HandCoins } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import { AuthContext } from "@/context/AuthProvider";
-import React from "react";
 
 interface SideBarProps {
   isOpen: boolean;
@@ -108,7 +110,6 @@ export default function SideBar({ isOpen }: SideBarProps) {
           ? "Teacher Dashboard"
           : "Student Dashboard"}
       </div>
-
       <nav className="flex flex-col space-y-2 flex-1">{renderLinks()}</nav>
     </motion.div>
   );
