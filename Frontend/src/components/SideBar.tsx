@@ -1,4 +1,4 @@
-import { Home, User, Settings, Clipboard ,HandCoins } from "lucide-react";
+import { Home, User, Settings, Clipboard, HandCoins } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
@@ -23,9 +23,9 @@ export default function SideBar({ isOpen }: SideBarProps) {
                 <Home size={18} /> Dashboard
               </Button>
             </Link>
-             <Link to="/createPayment">
+            <Link to="/createPayment">
               <Button variant="ghost" className="w-full justify-start gap-2">
-                <HandCoins  size={18} /> Create Payment
+                <HandCoins size={18} /> Create Payment
               </Button>
             </Link>
             <Link to="/teachers">
@@ -59,9 +59,9 @@ export default function SideBar({ isOpen }: SideBarProps) {
                 <Home size={18} /> Dashboard
               </Button>
             </Link>
-             <Link to="/createPayment">
+            <Link to="/createPayment">
               <Button variant="ghost" className="w-full justify-start gap-2">
-                <HandCoins  size={18} /> Create Payment
+                <HandCoins size={18} /> Create Payment
               </Button>
             </Link>
             <Link to="/students">
@@ -93,14 +93,13 @@ export default function SideBar({ isOpen }: SideBarProps) {
       initial={{ x: -300, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
-     className={clsx(
-  "fixed md:static h-screen md:h-auto top-0 pt-[72px] left-0 w-64 bg-white shadow-lg flex flex-col p-4 border-r border-gray-300 z-40",
-  {
-    "-translate-x-full md:translate-x-0": !isOpen,
-    "translate-x-0": isOpen,
-  }
-)}
-
+      className={clsx(
+        "fixed md:static h-screen md:h-auto top-0 pt-[72px] left-0 w-64 bg-white shadow-lg flex flex-col p-4 border-r border-gray-300 z-40",
+        {
+          "-translate-x-full md:translate-x-0": !isOpen,
+          "translate-x-0": isOpen,
+        }
+      )}
     >
       <div className="text-xl font-bold pt-5 text-[#737373] mb-6">
         {user?.role === "admin"

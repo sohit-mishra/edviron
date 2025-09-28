@@ -106,7 +106,6 @@ export default function StudentList() {
   const handleView = (id: string) => navigate(`/student/${id}`);
   const handleAdd = () => navigate(`/student/add`);
 
-  // helper for showing "X–Y of Z"
   const showingFrom = (currentPage - 1) * itemsPerPage + 1;
   const showingTo = Math.min(currentPage * itemsPerPage, totalRecords);
 
@@ -134,6 +133,11 @@ export default function StudentList() {
         </div>
       </motion.div>
 
+      {/* Showing X to Y of Z */}
+      <div className="text-sm text-gray-600 mb-2">
+        Showing {showingFrom} to {showingTo} of {totalRecords} students
+      </div>
+
       <Table className="w-full border-collapse border border-gray-200 rounded-lg overflow-hidden">
         <TableHeader className="bg-pink-100 text-gray-800">
           <TableRow>
@@ -142,9 +146,7 @@ export default function StudentList() {
             <TableHead className="px-4 py-2 text-left">Total Fees</TableHead>
             <TableHead className="px-4 py-2 text-left">Months</TableHead>
             <TableHead className="px-4 py-2 text-left">Month Payment</TableHead>
-            <TableHead className="px-4 py-2 text-left">
-              Create Account
-            </TableHead>
+            <TableHead className="px-4 py-2 text-left">Create Account</TableHead>
             <TableHead className="px-4 py-2 text-left">School Name</TableHead>
             <TableHead className="px-4 py-2 text-center">View</TableHead>
             <TableHead className="px-4 py-2 text-center">Edit</TableHead>
@@ -174,21 +176,11 @@ export default function StudentList() {
                     {student.name}
                   </TableCell>
                   <TableCell className="px-4 py-3">{student.email}</TableCell>
-                  <TableCell className="px-4 py-3">
-                    ₹ {student.totalFees}
-                  </TableCell>
-                  <TableCell className="px-4 py-3">
-                    {student.months} Months
-                  </TableCell>
-                  <TableCell className="px-4 py-3">
-                    ₹ {student.monthPayment}
-                  </TableCell>
-                  <TableCell className="px-4 py-3">
-                    {student.createId.name}
-                  </TableCell>
-                  <TableCell className="px-4 py-3">
-                    {student.schoolId.schoolName}
-                  </TableCell>
+                  <TableCell className="px-4 py-3">₹ {student.totalFees}</TableCell>
+                  <TableCell className="px-4 py-3">{student.months} Months</TableCell>
+                  <TableCell className="px-4 py-3">₹ {student.monthPayment}</TableCell>
+                  <TableCell className="px-4 py-3">{student.createId.name}</TableCell>
+                  <TableCell className="px-4 py-3">{student.schoolId.schoolName}</TableCell>
                   <TableCell className="px-4 py-3 text-center">
                     <Button
                       variant="outline"
