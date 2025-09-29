@@ -20,9 +20,13 @@ import { UserModule } from './user/user.module';
 import { TeachersModule } from './teachers/teachers.module';
 import { StudentsModule } from './students/students.module';
 
+if (!process.env.MONGODB_URI) {
+  throw new Error('MONGODB_URI environment variable not set');
+}
+
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/edviron'),
+    MongooseModule.forRoot(process.env.MONGODB_URI),
     AuthModule,
     OrdersModule,
     TransactionsModule,
